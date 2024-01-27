@@ -1,0 +1,65 @@
+#!/bin/bash
+
+set -eufo pipefail
+
+{{ $brews := list
+     "bat"
+     "curl"
+     "zoxide"
+     "delve"
+     "tree"
+     "bitwarden-cli"
+     "bottom"
+     "fd"
+     "jq"
+     "jql"
+     "fzf"
+     "pyenv"
+     "colima"
+     "docker"
+     "neovim"
+     "htop"
+     "ripgrep"
+     "tmux"
+     "eza"
+     "go"
+     "node"
+     "hyperfine"
+     "lazygit"
+     "ninja"
+     "lua-language-server"
+     "wget" -}}
+
+{{ $casks := list
+     "librewolf"
+     "raycast"
+     "bitwarden"
+     "zoom"
+     "wezterm"
+     "zed"
+     "obs"
+     "discord"
+     "rio"
+     "brave-browser"
+     "keymapp"
+     "visual-studio-code"
+     "firefox" -}}
+
+brew bundle --no-lock --file=/dev/stdin <<EOF
+{{ range ($brews | sortAlpha | uniq) -}}
+{{ if eq "{{ . }}" "neovim" }}
+brew "{{ . }}" --HEAD
+{{ else }}
+brew "{{ . }}"
+{{ end }}
+{{ end -}}
+{{ range ($casks | sortAlpha | uniq) -}}
+{{ if eq "{{ . }}" "rio" }}
+cask "{{ . }}" --HEAD
+{{ else if eq "{{ . }}" "librewolf" }}
+cask "{{ . }}" --no-quarantine
+{{ else }}
+cask "{{ . }}"
+{{ end }}
+{{ end -}}
+EOF

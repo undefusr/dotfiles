@@ -1,0 +1,3 @@
+{{- if eq .location "home" }}
+{{- (bitwarden "item" .privateKey).notes }}
+{{- end -}}

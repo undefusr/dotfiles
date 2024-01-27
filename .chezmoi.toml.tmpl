@@ -1,0 +1,12 @@
+{{ $location := promptStringOnce . "home" "Whats your locatian machine?" }}
+{{ $email := promptStringOnce . "email@email.com" "email address" }}
+{{ $name := promptStringOnce . "name surname" "your git username" }}
+{{ $sshhost := promptStringOnce . "github.com" "your ssh host" }}
+{{ $privateKey := promptStringOnce . "private_key" "your notes name for private key" }}
+[data]
+        email = {{ $email | quote }}
+        location = {{ $location | quote }}
+        name = {{ $name | quote }}
+	sshhost = {{ $sshhost | quote }}
+	privateKey = {{ $privateKey | quote }}
+
