@@ -4,8 +4,8 @@ opt.termguicolors = true
 opt.hidden = true
 opt.magic = true
 opt.relativenumber = true
-opt.virtualedit = 'block'
-opt.clipboard = 'unnamedplus'
+opt.virtualedit = "block"
+opt.clipboard = "unnamedplus"
 opt.wildignorecase = true
 opt.swapfile = false
 
@@ -23,10 +23,10 @@ opt.smartcase = true
 opt.infercase = true
 opt.cursorline = true
 
-opt.completeopt = 'menu,menuone,noselect'
+opt.completeopt = "menu,menuone,noinsert"
 opt.showmode = false
 opt.showmatch = true
-opt.shortmess = 'aoOTIcF'
+opt.shortmess = "aoOTIcF"
 opt.scrolloff = 2
 opt.sidescrolloff = 5
 opt.ruler = false
@@ -39,7 +39,7 @@ opt.cmdheight = 0
 opt.laststatus = 3
 opt.list = true
 
-opt.listchars = 'tab:»··,nbsp:+,trail:·,extends:→,precedes:←'
+opt.listchars = "tab:»··,nbsp:+,trail:·,extends:→,precedes:←"
 opt.pumblend = 10
 opt.winblend = 10
 opt.undofile = true
@@ -51,22 +51,21 @@ opt.tabstop = 2
 opt.shiftwidth = 2
 
 opt.foldlevelstart = 99
-opt.foldmethod = 'marker'
+opt.foldmethod = "marker"
 
 opt.splitright = true
 opt.wrap = true
 
 opt.number = true
-opt.signcolumn = 'yes'
-opt.spelloptions = 'camel'
+opt.signcolumn = "yes"
+opt.spelloptions = "camel"
 
 opt.textwidth = 100
-opt.colorcolumn = '100'
+opt.colorcolumn = "100"
 
 opt.hidden = true
 
-if vim.fn.executable('rg') == 1 then
-  opt.grepformat = '%f:%l:%c:%m,%f:%l:%m'
-  opt.grepprg = 'rg --vimgrep --no-heading --smart-case'
+if vim.fn.executable("rg") == 1 then
+  opt.grepformat = "%f:%l:%c:%m,%f:%l:%m"
+  opt.grepprg = "rg --vimgrep --no-heading --smart-case"
 end
-

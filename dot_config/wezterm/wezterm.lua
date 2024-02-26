@@ -1,17 +1,19 @@
-local wezterm = require 'wezterm'
+local wezterm = require("wezterm")
 local config = {}
 
 local function scheme_for_appearance(appearance)
-  if appearance:find "Dark" then
-    return "Catppuccin Mocha"
+  if appearance:find("Dark") then
+    return "Catppuccin Frappe"
   else
     return "Catppuccin Latte"
   end
 end
 
-if wezterm.config_builder then config = wezterm.config_builder() end
+if wezterm.config_builder then
+  config = wezterm.config_builder()
+end
 
--- config.color_scheme_dirs = { "$HOME/.config/wezterm/colors" }
+config.color_scheme_dirs = { "$HOME/.config/wezterm/colors" }
 config.color_scheme = scheme_for_appearance(wezterm.gui.get_appearance())
 
 -- This causes `wezterm` to act as though it was started as
@@ -38,6 +40,7 @@ config.adjust_window_size_when_changing_font_size = false
 config.line_height = 1.0
 config.font = wezterm.font_with_fallback({
   { family = "MonoLisa",                    scale = 1.0 },
+  { family = "CommitMonolineonetwo",        scale = 1.0 },
   { family = "CommitMono",                  scale = 1.0 },
   { family = "MonolisaZero Nerd Font Mono", scale = 1.2 },
   { family = "Source Code Pro",             scale = 1.2 },
@@ -46,7 +49,7 @@ config.font = wezterm.font_with_fallback({
 
 -- color_scheme = 'termnial.sexy',
 config.enable_tab_bar = false
-config.font_size = 15.0
+config.font_size = 13.0
 -- config.macos_window_background_blur = 30
 
 -- window_background_image = '/Users/omerhamerman/Downloads/3840x1080-Wallpaper-041.jpg',
@@ -62,19 +65,18 @@ config.font_size = 15.0
 -- config.window_decorations = 'RESIZE'
 config.keys = {
   {
-    key = 'z',
-    mods = 'CTRL',
+    key = "z",
+    mods = "ALT",
     action = wezterm.action.ToggleFullScreen,
   },
 }
 config.mouse_bindings = {
   -- Ctrl-click will open the link under the mouse cursor
   {
-    event = { Up = { streak = 1, button = 'Left' } },
-    mods = 'CTRL',
+    event = { Up = { streak = 1, button = "Left" } },
+    mods = "CTRL",
     action = wezterm.action.OpenLinkAtMouseCursor,
   },
 }
 
 return config
-
