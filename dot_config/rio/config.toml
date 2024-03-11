@@ -5,7 +5,7 @@
 #
 # Whenever the key binding `OpenConfigEditor` is triggered it will
 # use the value of the editor along with the rio configuration path.
-editor = 'nvim'
+editor = 'vi'
 
 # Cursor
 #
@@ -34,14 +34,15 @@ blinking-cursor = false
 # (windows: C:\Users\USER\AppData\Local\rio\themes\dracula.toml)
 #
 # Example:
-# theme = "dracula"
+theme = "catppuccin-frappe"
 
 # Padding-x
 #
 # define x axis padding (default is 0)
 #
 # Example:
-# padding-x = 10
+padding-y = 5
+padding-x = 5
 
 # Option as Alt
 #
@@ -49,7 +50,7 @@ blinking-cursor = false
 # Possible choices: 'both', 'left' and 'right'.
 #
 # Example:
-# option-as-alt = 'left'
+option-as-alt = 'left'
 
 # Startup directory
 #
@@ -162,7 +163,7 @@ blinking-cursor = false
 # Example:
 [fonts]
 size = 18
-family = "CommitMonolineonetwo"
+family = "MonoLisa"
 #
 # [fonts.regular]
 # family = "cascadiamono"
@@ -292,4 +293,3 @@ family = "CommitMonolineonetwo"
 # Example:
 # [developer]
 # log-level = "OFF"
-

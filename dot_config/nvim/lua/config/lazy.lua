@@ -11,10 +11,7 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
--- example using a list of specs with the default options
-vim.g.mapleader = " " -- make sure to set mapleader before lazy so your mappings are correct
-
-present, lazy = pcall(require, "lazy")
+local present, lazy = pcall(require, "lazy")
 if present then
   lazy.setup("plugins", {
     ui = {
@@ -46,8 +43,8 @@ if present then
           "vimballPlugin",
           "zip",
           "zipPlugin",
-        }
-      }
+        },
+      },
     },
   })
 end
