@@ -1,9 +1,9 @@
 local keymap = vim.keymap
 
 if vim.lsp.inlay_hint then
-  keymap.set("n", "<leader>uh", function()
-    vim.lsp.inlay_hint(0, nil)
-  end, { desc = "Toggle Inlay Hints" })
+	keymap.set("n", "<leader>uh", function()
+		vim.lsp.inlay_hint(0, nil)
+	end, { desc = "Toggle Inlay Hints" })
 end
 
 keymap.set("i", "jj", "<ESC>", { desc = "" })
@@ -19,7 +19,7 @@ keymap.set("i", ";;", "<ESC>$a;<ESC>", { desc = "" })
 keymap.set("i", "-s", "{}", { desc = "" })
 keymap.set("i", "-?", "{:?}", { desc = "" })
 keymap.set("n", ";q", ":q<CR>", { desc = "", silent = true, remap = true })
-keymap.set("n", ";w", ":wa<CR>", { desc = "", silent = true, nowait = true, expr = false, remap = true })
+keymap.set("n", ";w", ":wa<CR>", { desc = "", silent = true, nowait = true, remap = true })
 keymap.set("n", "<Leader>bp", "<cmd>bp<cr>", { desc = "" })
 keymap.set("n", "<Leader>bn", "<cmd>bn<cr>", { desc = "" })
 keymap.set("n", "<Leader>bd", "<cmd>Bdelete<cr>", { desc = "" })
