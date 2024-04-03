@@ -60,6 +60,14 @@ path=(~/bin $path)
 
 # Export environment variables.
 export GPG_TTY=$TTY
+export PATH="$PATH:$(go env GOPATH)/bin"
+if command -v pyenv 1>/dev/null 2>&1; then
+	export PYENV_ROOT="$HOME/.pyenv"
+	export PATH="$PYENV_ROOT/bin:$PATH"
+	eval "$(pyenv init --path)"
+	eval "$(pyenv init -)"
+fi
+
 
 # Source additional local files if they exist.
 z4h source ~/.env.zsh

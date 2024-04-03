@@ -10,7 +10,10 @@ if [ -n "${ZSH_VERSION-}" ]; then
   # If you are certain that you must export some environment variables
   # in ~/.zshenv (see comments at the top!), do it here:
   #
-  # export PATH "$PATH:$(go env GOPATH)/bin"
+  # export PATH $PATH:$(go env GOPATH)/bin
+  if command -v go 1>/dev/null 2>&1; then
+    export PATH="$PATH:$(go env GOPATH)/binh"
+  fi
   #
   # Do not change anything else in this file.
   VIM="nvim"
@@ -18,10 +21,15 @@ if [ -n "${ZSH_VERSION-}" ]; then
   TERMINAL="wezterm"
 
   # latte
+  # export FZF_DEFAULT_OPTS=" \
+  # --color=bg+:#ccd0da,bg:#eff1f5,spinner:#dc8a78,hl:#d20f39 \
+  # --color=fg:#4c4f69,header:#d20f39,info:#8839ef,pointer:#dc8a78 \
+  # --color=marker:#dc8a78,fg+:#4c4f69,prompt:#8839ef,hl+:#d20f39"
+
   export FZF_DEFAULT_OPTS=" \
-  --color=bg+:#ccd0da,bg:#eff1f5,spinner:#dc8a78,hl:#d20f39 \
-  --color=fg:#4c4f69,header:#d20f39,info:#8839ef,pointer:#dc8a78 \
-  --color=marker:#dc8a78,fg+:#4c4f69,prompt:#8839ef,hl+:#d20f39"
+  --color=bg+:#414559,bg:#303446,spinner:#f2d5cf,hl:#e78284 \
+  --color=fg:#c6d0f5,header:#e78284,info:#ca9ee6,pointer:#f2d5cf \
+  --color=marker:#f2d5cf,fg+:#c6d0f5,prompt:#ca9ee6,hl+:#e78284"
 
   #machiato
   # export FZF_DEFAULT_OPTS=" \
