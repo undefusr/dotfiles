@@ -12,7 +12,7 @@ return {
 		if time.hour < 8 or time.hour > 18 then
 			vim.cmd([[colorscheme catppuccin-frappe]])
 		else
-			vim.cmd([[colorscheme catppuccin-latte]])
+			vim.cmd([[colorscheme catppuccin-frappe]])
 		end
 	end,
 }
