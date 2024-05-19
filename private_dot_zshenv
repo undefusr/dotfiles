@@ -12,7 +12,7 @@ if [ -n "${ZSH_VERSION-}" ]; then
   #
   # export PATH $PATH:$(go env GOPATH)/bin
   if command -v go 1>/dev/null 2>&1; then
-    export PATH="$PATH:$(go env GOPATH)/binh"
+    export PATH="$PATH:$(go env GOPATH)/bin"
   fi
   #
   # Do not change anything else in this file.
@@ -26,10 +26,10 @@ if [ -n "${ZSH_VERSION-}" ]; then
   # --color=fg:#4c4f69,header:#d20f39,info:#8839ef,pointer:#dc8a78 \
   # --color=marker:#dc8a78,fg+:#4c4f69,prompt:#8839ef,hl+:#d20f39"
 
-  export FZF_DEFAULT_OPTS=" \
-  --color=bg+:#414559,bg:#303446,spinner:#f2d5cf,hl:#e78284 \
-  --color=fg:#c6d0f5,header:#e78284,info:#ca9ee6,pointer:#f2d5cf \
-  --color=marker:#f2d5cf,fg+:#c6d0f5,prompt:#ca9ee6,hl+:#e78284"
+  # export FZF_DEFAULT_OPTS=" \
+  # --color=bg+:#414559,bg:#303446,spinner:#f2d5cf,hl:#e78284 \
+  # --color=fg:#c6d0f5,header:#e78284,info:#ca9ee6,pointer:#f2d5cf \
+  # --color=marker:#f2d5cf,fg+:#c6d0f5,prompt:#ca9ee6,hl+:#e78284"
 
   #machiato
   # export FZF_DEFAULT_OPTS=" \
