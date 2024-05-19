@@ -1,92 +1,62 @@
 return {
-	"nvim-telescope/telescope.nvim",
-	tag = "0.1.5",
-	dependencies = {
-		"nvim-lua/plenary.nvim",
-		"nvim-telescope/telescope-fzy-native.nvim",
-		"nvim-telescope/telescope-ui-select.nvim",
-	},
-	opts = function()
-		return {
-			defaults = {
-				vimgrep_arguments = {
-					"rg",
-					"--color=never",
-					"--no-heading",
-					"--with-filename",
-					"--line-number",
-					"--column",
-					"--smart-case",
-				},
-				path_display = { "truncate" },
-				shorten_path = true,
-				prompt_prefix = " λ ",
-				selection_caret = "> ",
-				entry_prefix = "  ",
-				initial_mode = "insert",
-				selection_strategy = "reset",
-				sorting_strategy = "ascending",
-				layout_strategy = "bottom_pane",
-				layout_config = {
-					height = 10,
-				},
-				file_ignore_patterns = { "^vendor/" },
-			},
-			extensions = {
-				fzy_native = {
-					override_generic_sorter = false,
-					override_file_sorter = true,
-				},
+  { "nvim-lua/plenary.nvim" },
+  {
+    "nvim-telescope/telescope.nvim",
+    -- branch = "0.1.6",
+    tag = '0.1.6',
+    dependencies = {
+      { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+      { "nvim-telescope/telescope-smart-history.nvim" },
+      { "nvim-telescope/telescope-ui-select.nvim" },
+      { "kkharji/sqlite.lua" },
+    },
+    config = function()
+      local data = assert(vim.fn.stdpath "data") --[[@as string]]
 
-				["ui-select"] = {
-					require("telescope.themes").get_ivy({
-						-- even more opts
-						shorten_path = true,
-						sorting_strategy = "ascending",
-						layout_strategy = "bottom_pane",
-						previewer = true,
-						layout_config = {
-							height = 6,
-						},
-					}),
-				},
-			},
-		}
-	end,
-	config = function(_, opts)
-		local telescope = require("telescope")
-		telescope.setup(opts)
-		telescope.load_extension("fzy_native")
-		telescope.load_extension("ui-select")
-		telescope.load_extension("dotfiles")
-		telescope.load_extension("app")
+      require("telescope").setup {
+        extensions = {
+          fzf = {},
+          wrap_results = true,
+          history = {
+            path = vim.fs.joinpath(data, "telescope_history.sqlite3"),
+            limit = 100,
+          },
+          ["ui-select"] = {
+            require("telescope.themes").get_ivy {
+              -- even more opts
+              shorten_path = true,
+              sorting_strategy = "ascending",
+              layout_strategy = "bottom_pane",
+              previewer = true,
+              layout_config = {
+                height = 6,
+              },
+            },
+          },
+        },
+      }
 
-		-- set keymaps
-		local keymap = vim.keymap -- for conciseness
+      pcall(require("telescope").load_extension, "fzf")
+      pcall(require("telescope").load_extension, "smart_history")
+      pcall(require("telescope").load_extension, "ui-select")
 
-		keymap.set("n", "<leader>tt", "<cmd>Telescope <cr>", { desc = "Open telescope" })
-		keymap.set("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Fuzzy find files in cwd" })
-		keymap.set("n", "<leader>of", "<cmd>Telescope oldfiles<cr>", { desc = "Fuzzy find recent files" })
-		keymap.set("n", "<leader>ds", "<cmd>Telescope document_symbols<cr>", { desc = "Fuzzy find files in cwd" })
-		keymap.set("n", "<leader>lg", "<cmd>Telescope live_grep<cr>", { desc = "Find string in cwd" })
-		keymap.set("n", "<leader>gs", "<cmd>Telescope grep_string<cr>", { desc = "Find string under cursor in cwd" })
-		keymap.set(
-			"n",
-			"<leader>ws",
-			"<cmd>Telescope lsp_workspace_symbols ignore_symbols<cr>",
-			{ desc = "Find string under cursor in cwd" }
-		)
-		keymap.set(
-			"n",
-			"<leader>dd",
-			"<cmd>Telescope lsp_document_diagnostics<cr>",
-			{ desc = "Find string under cursor in cwd" }
-		)
-		keymap.set(
-			"n",
-			"<leader>dD",
-			"<cmd>Telescope lsp_workspace_diagnostic<cr>",
-			{ desc = "Find string under cursor in cwd" }
-		)
-	end,
+      local builtin = require "telescope.builtin"
+
+      vim.keymap.set("n", "<leader>fd", builtin.find_files)
+      vim.keymap.set("n", "<leader>fh", builtin.help_tags)
+      vim.keymap.set("n", "<leader>fg", builtin.live_grep)
+      vim.keymap.set("n", "<leader>/", builtin.current_buffer_fuzzy_find)
+
+      vim.keymap.set("n", "<leader>gw", builtin.grep_string)
+
+      vim.keymap.set("n", "<leader>fa", function()
+        ---@diagnostic disable-next-line: param-type-mismatch
+        builtin.find_files { cwd = vim.fs.joinpath(vim.fn.stdpath "data", "lazy") }
+      end)
+
+      vim.keymap.set("n", "<leader>en", function()
+        builtin.find_files { cwd = vim.fn.stdpath "config" }
+      end)
+    end,
+  },
 }

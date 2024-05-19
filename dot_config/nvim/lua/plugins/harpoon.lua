@@ -1,41 +1,32 @@
 return {
-	"ThePrimeagen/harpoon",
-	branch = "harpoon2",
-	dependencies = { "nvim-lua/plenary.nvim" },
-	settings = {
-		save_on_toggle = true,
-		sync_on_ui_close = true,
-		key = function()
-			return vim.loop.cwd()
-		end,
-	},
-	config = function()
-		local harpoon = require("harpoon")
-		harpoon:setup()
+  "ThePrimeagen/harpoon",
+  branch = "harpoon2",
+  config = function()
+    local harpoon = require "harpoon"
+    harpoon:setup()
 
-		vim.keymap.set("n", "<leader>hm", function()
-			harpoon.ui:toggle_quick_menu(harpoon:list())
-		end)
+    vim.keymap.set("n", "<leader>hh", function()
+      harpoon:list():add()
+    end)
 
-		vim.keymap.set("n", "<leader>h1", function()
-			harpoon:list():select(1)
-		end)
-		vim.keymap.set("n", "<leader>h2", function()
-			harpoon:list():select(2)
-		end)
-		vim.keymap.set("n", "<leader>h3", function()
-			harpoon:list():select(3)
-		end)
-		vim.keymap.set("n", "<leader>h4", function()
-			harpoon:list():select(4)
-		end)
+    vim.keymap.set("n", "<leader>hm", function()
+      harpoon.ui:toggle_quick_menu(harpoon:list())
+    end)
 
-		-- Toggle previous & next buffers stored within Harpoon list
-		vim.keymap.set("n", "<leader>hp", function()
-			harpoon:list():prev()
-		end)
-		vim.keymap.set("n", "<leader>hn", function()
-			harpoon:list():next()
-		end)
-	end,
+    -- Toggle previous & next buffers stored within Harpoon list
+    vim.keymap.set("n", "<leader>hp", function()
+      harpoon:list():prev()
+    end)
+
+    vim.keymap.set("n", "<leader>hn", function()
+      harpoon:list():next()
+    end)
+
+    -- Set <space>1..<space>5 be my shortcuts to moving to the files
+    for _, idx in ipairs { 1, 2, 3, 4, 5 } do
+      vim.keymap.set("n", string.format("<leader>h%d", idx), function()
+        harpoon:list():select(idx)
+      end)
+    end
+  end,
 }
