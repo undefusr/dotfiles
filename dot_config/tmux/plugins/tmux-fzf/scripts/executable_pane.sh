@@ -14,7 +14,7 @@ fi
 
 FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --header='Select an action.'"
 if [[ -z "$1" ]]; then
-    action=$(printf "switch\nbreak\njoin\nswap\nlayout\nkill\nresize\nrename\n[cancel]" | eval "$TMUX_FZF_BIN $TMUX_FZF_OPTIONS")
+    action=$(printf "switch\nbreak\njoin\nswap\nlayout\nkill\nresize\n[cancel]" | eval "$TMUX_FZF_BIN $TMUX_FZF_OPTIONS")
 else
     action="$1"
 fi
@@ -55,11 +55,13 @@ else
         FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --header='Select target pane.'"
     fi
     if [[ "$action" == "switch" || "$action" == "join" ]]; then
-        panes=$(echo "$panes" | grep -v "^$current_pane")
+        if [[ -z "$TMUX_FZF_SWITCH_CURRENT" || "$action" == "join" ]]; then
+            panes=$(echo "$panes" | grep -v "^$current_pane")
+        fi
         target_origin=$(printf "%s\n[cancel]" "$panes" | eval "$TMUX_FZF_BIN $TMUX_FZF_OPTIONS $TMUX_FZF_PREVIEW_OPTIONS")
     else
         target_origin=$(printf "[current]\n%s\n[cancel]" "$panes" | eval "$TMUX_FZF_BIN $TMUX_FZF_OPTIONS $TMUX_FZF_PREVIEW_OPTIONS")
-        target_origin=$(echo "$target_origin" | sed -E "s/\[current\]/$current_pane_origin/")
+        target_origin=${target_origin/\[current\]/$current_pane_origin}
     fi
     [[ "$target_origin" == "[cancel]" || -z "$target_origin" ]] && exit
     target=$(echo "$target_origin" | sed 's/: .*//')
@@ -83,7 +85,5 @@ else
         last_win_num=$(tmux list-windows | sort -nr | head -1 | sed 's/:.*//')
         ((last_win_num_after = last_win_num + 1))
         tmux break-pane -s "$target" -t "$cur_ses":"$last_win_num_after"
-    elif [[ "$action" == "rename" ]]; then
-        tmux command-prompt -I "select-pane -t \"${target}\" -T "
     fi
 fi

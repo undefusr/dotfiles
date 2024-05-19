@@ -53,9 +53,11 @@ else
     fi
     if [[ "$action" != "switch" ]]; then
         target_origin=$(printf "[current]\n%s\n[cancel]" "$windows" | eval "$TMUX_FZF_BIN $TMUX_FZF_OPTIONS $TMUX_FZF_PREVIEW_OPTIONS")
-        target_origin=$(echo "$target_origin" | sed -E "s/\[current\]/$current_window_origin/")
+        target_origin=${target_origin/\[current\]/$current_window_origin}
     else
-        windows=$(echo "$windows" | grep -v "^$current_window")
+        if [[ -z "$TMUX_FZF_SWITCH_CURRENT" ]]; then
+            windows=$(echo "$windows" | grep -v "^$current_window")
+        fi
         target_origin=$(printf "%s\n[cancel]" "$windows" | eval "$TMUX_FZF_BIN $TMUX_FZF_OPTIONS $TMUX_FZF_PREVIEW_OPTIONS")
     fi
     [[ "$target_origin" == "[cancel]" || -z "$target_origin" ]] && exit
@@ -63,7 +65,14 @@ else
     if [[ "$action" == "kill" ]]; then
         echo "$target" | sort -r | xargs -I{} tmux unlink-window -k -t {}
     elif [[ "$action" == "rename" ]]; then
-        tmux command-prompt -I "rename-window -t \"$target\" "
+        mkfifo /tmp/tmux_fzf_window_name
+        tmux split-window -v -l 30% -b "bash -c 'printf \"Window Name: \" && read window_name && echo \"\$window_name\" > /tmp/tmux_fzf_window_name'" &
+        window_name=$(cat /tmp/tmux_fzf_window_name)
+        rm /tmp/tmux_fzf_window_name
+        if [ -z "$window_name" ]; then
+            exit
+        fi
+        tmux rename-window -t "$target" "$window_name"
     elif [[ "$action" == "swap" ]]; then
         windows=$(echo "$windows" | grep -v "^$target")
         FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --header='Select another target window.'"

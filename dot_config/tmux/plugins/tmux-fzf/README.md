@@ -4,7 +4,7 @@
 
 - Manage sessions (switch, new, rename, detach, kill).
 - Manage windows (switch, link, move, swap, rename, kill).
-- Manage panes (switch, break, join, swap, layout, kill, resize, rename).
+- Manage panes (switch, break, join, swap, layout, kill, resize).
 - Search commands and append to command prompt.
 - Search key bindings and execute.
 - Search clipboard history and paste to current window.
@@ -156,6 +156,12 @@ For more information, check "FORMATS" section in tmux manual.
 
 
 ## Filter
+
+By default, the current session, window, and pane, are not listed among the switch possibilities. To include it, set:
+
+```tmux
+TMUX_FZF_SWITCH_CURRENT=1
+```
 
 When using the window listing script, it is possible to filter its output. This relies on the tmux filtering feature with a specific syntax for filters. For more information about this feature, check "FORMATS" section in the tmux manual.
 
