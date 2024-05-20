@@ -20,6 +20,7 @@ opt.signcolumn = "yes"
 opt.shada = { "'10", "<0", "s10", "h" }
 
 opt.clipboard = "unnamedplus"
+opt.cursorline = true
 
 -- Don't have `o` add a comment
 opt.formatoptions:remove "o"
@@ -29,20 +30,22 @@ opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
 
 opt.breakindent = true
 
-vim.opt.swapfile = false
-vim.opt.backup = false
-vim.opt.undodir = os.getenv "HOME" .. "/.vim/undodir"
-vim.opt.undofile = true
+opt.swapfile = false
+opt.backup = false
+opt.undodir = os.getenv "HOME" .. "/.vim/undodir"
+opt.undofile = true
 
-vim.opt.colorcolumn = "100"
+opt.lazyredraw = true
+
+opt.colorcolumn = "100"
 
 opt.cmdheight = 0
 opt.laststatus = 3
 
-vim.opt.mouse = "a"
+opt.mouse = "a"
 
 -- Minimal number of screen lines to keep above and below the cursor.
-vim.opt.scrolloff = 10
+opt.scrolloff = 10
 
 opt.magic = true
 opt.virtualedit = "block"
@@ -52,4 +55,3 @@ if vim.fn.executable "rg" == 1 then
   opt.grepformat = "%f:%l:%c:%m,%f:%l:%m"
   opt.grepprg = "rg --vimgrep --no-heading --smart-case"
 end
-

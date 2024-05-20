@@ -2,8 +2,7 @@ return {
   { "nvim-lua/plenary.nvim" },
   {
     "nvim-telescope/telescope.nvim",
-    -- branch = "0.1.6",
-    tag = "0.1.6",
+    branch = "master",
     dependencies = {
       { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
       { "nvim-telescope/telescope-smart-history.nvim" },
@@ -28,9 +27,6 @@ return {
               sorting_strategy = "ascending",
               layout_strategy = "bottom_pane",
               previewer = true,
-              layout_config = {
-                height = 6,
-              },
             },
           },
         },

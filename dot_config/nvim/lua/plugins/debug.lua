@@ -1,60 +1,74 @@
 return {
-	"mfussenegger/nvim-dap",
-	dependencies = {
-		"rcarriga/nvim-dap-ui",
-		"theHamsta/nvim-dap-virtual-text",
-		"leoluz/nvim-dap-go",
-		"williamboman/mason.nvim",
-		"nvim-neotest/nvim-nio",
-	},
-	config = function()
-		local dap = require("dap")
-		local dapui = require("dapui")
+  {
+    "mfussenegger/nvim-dap",
+    dependencies = {
+      "leoluz/nvim-dap-go",
+      "rcarriga/nvim-dap-ui",
+      "theHamsta/nvim-dap-virtual-text",
+      "nvim-neotest/nvim-nio",
+      "williamboman/mason.nvim",
+    },
+    config = function()
+      local dap = require "dap"
+      local ui = require "dapui"
 
-		-- require("nvim-dap-virtual-text").setup()
-		vim.api.nvim_set_keymap("n", "<leader>dt", ":DapUiToggle<CR>", { noremap = true })
-		vim.api.nvim_set_keymap("n", "<leader>db", ":DapToggleBreakpoint<CR>", { noremap = true })
-		vim.api.nvim_set_keymap("n", "<leader>dc", ":DapContinue<CR>", { noremap = true })
-		vim.api.nvim_set_keymap("n", "<leader>dr", ":lua require('dapui').open({reset = true})<CR>", { noremap = true })
+      require("dapui").setup()
+      require("dap-go").setup()
 
-		-- Dap UI setup
-		-- For more information, see |:help nvim-dap-ui|
-		dapui.setup({
-			-- Set icons to characters that are more likely to work in every terminal.
-			--    Feel free to remove or use ones that you like more! :)
-			--    Don't feel like these are good choices.
-			icons = { expanded = "▾", collapsed = "▸", current_frame = "*" },
-		})
+      require("nvim-dap-virtual-text").setup {
+        -- This just tries to mitigate the chance that I leak tokens here. Probably won't stop it from happening
+        display_callback = function(variable)
+          local name = string.lower(variable.name)
+          local value = string.lower(variable.value)
+          if name:match "secret" or name:match "api" or value:match "secret" or value:match "api" then
+            return "*****"
+          end
 
-		dap.listeners.after.event_initialized["dapui_config"] = dapui.open
-		dap.listeners.before.event_terminated["dapui_config"] = dapui.close
-		dap.listeners.before.event_exited["dapui_config"] = dapui.close
+          if #variable.value > 15 then
+            return " " .. string.sub(variable.value, 1, 15) .. "... "
+          end
 
-		local codelldb_root = require("mason-registry").get_package("codelldb"):get_install_path() .. "/extension/"
-		local codelldb_path = codelldb_root .. "adapter/codelldb"
-		local liblldb_path = codelldb_root .. "lldb/lib/liblldb.dylib"
+          return " " .. variable.value
+        end,
+      }
 
-		dap.adapters.codelldb = {
-			type = "server",
-			port = "${port}",
-			executable = {
-				command = codelldb_path,
-				args = { "--liblldb", liblldb_path, "--port", "${port}" },
+      -- Handled by nvim-dap-go
+      -- dap.adapters.go = {
+      --   type = "server",
+      --   port = "${port}",
+      --   executable = {
+      --     command = "dlv",
+      --     args = { "dap", "-l", "127.0.0.1:${port}" },
+      --   },
+      -- }
 
-				-- On windows you may have to uncomment this:
-				-- detached = false,
-			},
-		}
+      vim.keymap.set("n", "<leader>db", dap.toggle_breakpoint)
+      vim.keymap.set("n", "<leader>gb", dap.run_to_cursor)
 
-		dap.adapters.lldb = {
-			type = "executable",
-			command = vim.fn.exepath("lldb-vscode"),
-			name = "lldb",
-		}
+      -- Eval var under cursor
+      vim.keymap.set("n", "<leader>?", function()
+        require("dapui").eval(nil, { enter = true })
+      end)
 
-		vim.keymap.set("n", "<Leader>dt", dap.toggle_breakpoint, {})
-		vim.keymap.set("n", "<Leader>dc", dap.continue, {})
+      vim.keymap.set("n", "<F1>", dap.continue)
+      vim.keymap.set("n", "<F2>", dap.step_into)
+      vim.keymap.set("n", "<F3>", dap.step_over)
+      vim.keymap.set("n", "<F4>", dap.step_out)
+      vim.keymap.set("n", "<F5>", dap.step_back)
+      vim.keymap.set("n", "<F12>", dap.restart)
 
-		require("dap-go").setup()
-	end,
+      dap.listeners.before.attach.dapui_config = function()
+        ui.open()
+      end
+      dap.listeners.before.launch.dapui_config = function()
+        ui.open()
+      end
+      dap.listeners.before.event_terminated.dapui_config = function()
+        ui.close()
+      end
+      dap.listeners.before.event_exited.dapui_config = function()
+        ui.close()
+      end
+    end,
+  },
 }

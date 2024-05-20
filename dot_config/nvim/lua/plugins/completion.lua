@@ -2,6 +2,7 @@ return {
   {
     "hrsh7th/nvim-cmp",
     lazy = false,
+    enabled = true,
     priority = 100,
     dependencies = {
       "onsails/lspkind.nvim",
@@ -11,7 +12,6 @@ return {
       { "L3MON4D3/LuaSnip", build = "make install_jsregexp" },
       "saadparwaiz1/cmp_luasnip",
       "rafamadriz/friendly-snippets",
-      "hrsh7th/cmp-nvim-lsp-signature-help",
     },
     config = function()
       vim.opt.completeopt = { "menu", "menuone", "noselect" }
@@ -27,7 +27,6 @@ return {
           { name = "nvim_lsp" },
           { name = "path" },
           { name = "buffer" },
-          { name = "nvim_lsp_signature_help" },
           { name = "luasnip", keyword_length = 2 },
         },
         mapping = {
